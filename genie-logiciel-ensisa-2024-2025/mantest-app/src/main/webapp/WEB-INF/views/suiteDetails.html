@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suite Details</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/suiteDetails.css}" />
+    <link rel="stylesheet" th:href="@{/libs/fontawesome/css/all.min.css}" />
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+  </head>
+  <body>
+    <header th:replace="../fragments/template :: header"></header>
+    <main>
+
+      <div id="available-tests-container">
+        <aside class="available-tests" id="available-tests" style="display: none;">
+        <h3>Available Tests</h3>
+          <ul>
+            <li th:each="test : ${availableTests}">
+              <button type="button" class="add-available-test-btn" th:data-id="${test.id}" th:data-name="${test.name}">
+                <i class="fa-solid fa-plus"></i>
+                <span id="test-name" th:text="${test.name}">Test name</span>
+              </button>
+            </li>
+          </ul>
+        </aside>
+      </div>
+
+      <section class="section-header">
+        <button type="button" id="edit-button" class="wheel-button">
+          <i class="fas fa-cog"></i>
+        </button>
+        <h2>Suite Details</h2>
+      </section>
+
+      <section>
+        <div th:if="${errorMessage != null}">
+          <p class="error" th:text="${errorMessage}"></p>
+        </div>
+
+        <div th:if="${errorMessage == null}">
+          <div class="suite-flex-container">
+            <!-- Available Tests Sidebar -->
+
+
+            <div class="form-wrapper">
+              <form th:action="@{/updateSuite}" method="post" class="form-update" onsubmit="validateSuiteForm(event)" accept-charset="utf-8">
+                <input type="hidden" name="id" th:value="${suite?.id}" />
+
+                <p class="form-group">
+                  <label><strong>Name:</strong> </label>
+                  <span class="name-view">[[${suite?.name}]]</span>
+                  <input type="text" maxlength="128" id="name" name="name" class="name-edit form-control" th:value="${suite?.name}" required />
+                </p>
+
+                <p class="form-group" id="description-group">
+                  <label for="description"><strong>Description:</strong> </label>
+                  <span class="description-view">[[${suite?.description}]]</span>
+                  <textarea id="description" maxlength="256" name="description" class="description-edit form-control">
+[[${suite?.description}]]</textarea>
+                </p>
+
+                <div class="InputContainer">
+                  <input placeholder="Search" id="input" class="input" name="text" type="text" />
+                  <label class="labelforsearch" for="input">
+                    <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+                  </label>
+                </div>
+                <div class="search-results">
+                  <span class="results-count" id="resultsCount"></span>
+                </div>
+
+                <ul id="tests-list" class="tests-list">
+                  <li class="test-item" th:each="test : ${tests}">
+                    <div class="drag-handle">
+                      <i class="fa-solid fa-sort"></i>
+                    </div>
+                    <div class="test-details">
+                      <div class="test-info">
+                        <label>
+                          Test:
+                          <span class="test-view"></span>
+                          <input type="hidden" name="testIds" th:value="${test.id}" class="test-edit" />
+                          <div id="test-id-description">
+                            <a th:href="@{'/test?id=' + ${test.id}}">
+                              <span class="name" th:text="${test.name}" th:attr="data-name=${test.name}"></span>
+                            </a>
+                            <span class="description" th:text="${test.description}" th:attr="data-description=${test.description}"></span>
+                          </div>
+
+                        </label>
+                      </div>
+                    </div>
+                    <div>
+                      <button type="button" class="delete-test btn-danger small">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </div>
+                  </li>
+                </ul>
+
+                <div class="form-actions buttons-container">
+                  <!--<button type="button" id="add-test" class="cta-btn small">
+                    <i class="fa-solid fa-plus"></i>
+                  </button>-->
+
+                  <button type="submit" id="save-button" class="cta-btn small">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                  </button>
+                </div>
+              </form>
+              <form th:action="@{/removeSuite}" method="post" class="form-delete">
+                <input type="hidden" name="id" th:value="${suite?.id}" />
+                <button type="submit" id="delete-suite" class="cta-btn danger small" onclick="return confirm('Are you sure you want to delete this suite?');">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </form>
+              <a class="back-link" th:href="@{/suiteList}">Return to Suite List</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- <div id="testCreateModal">
+      <header>
+        <button type="button" onclick="closeTestCreateModal()">Close</button>
+      </header>
+      <iframe id="testCreateIframe" th:src="@{/testCreate(embedded=true)}"></iframe>
+    </div> -->
+
+    <footer th:replace="../fragments/template :: footer"></footer>
+  </body>
+  <script type="text/javascript" th:src="@{/libs/sortable/Sortable.min.js}"></script>
+  <script type="text/javascript" th:src="@{/resources/js/suiteDetails.js}"></script>
+</html>

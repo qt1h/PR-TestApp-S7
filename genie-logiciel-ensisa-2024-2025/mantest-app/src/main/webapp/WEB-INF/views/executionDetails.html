@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Execution Details</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/executionDetails.css}" />
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+</head>
+
+<body>
+<header th:replace="../fragments/template :: header"></header>
+
+<main>
+    <h2>Execution Details</h2>
+
+    <!-- Error message if needed -->
+    <p th:if="${errorMessage != null}" class="error-message" th:text="${errorMessage}"></p>
+
+    <!-- Execution's details -->
+    <div th:if="${errorMessage == null}" class="execution-details">
+
+
+            <!-- Execution's name -->
+            <p>Name:
+                <span>[[${test?.name}]]</span>
+            </p>
+
+            <!-- Execution's description -->
+            <p th:if="${!test.description.isEmpty()}">Description:
+                <span>[[${test?.description}]]</span>
+            </p>
+
+            <!-- Execution's status -->
+            <p>Status:
+                <span>
+                    <span th:if="${status == T(fr.uha.ensisa.gl.testsquad.mantest.status.TestStatus).NOT_STARTED}">Not Started</span>
+                    <span th:if="${status == T(fr.uha.ensisa.gl.testsquad.mantest.status.TestStatus).IN_PROGRESS}">In Progress</span>
+                    <span th:if="${status == T(fr.uha.ensisa.gl.testsquad.mantest.status.TestStatus).PASSED}">Passed</span>
+                    <span th:if="${status == T(fr.uha.ensisa.gl.testsquad.mantest.status.TestStatus).FAILED}">Failed</span>
+                    <span th:if="${status == T(fr.uha.ensisa.gl.testsquad.mantest.status.TestStatus).REGRESSION}">Regression</span>
+                </span>
+            </p>
+
+            <!-- Execution's global comment -->
+            <p th:if="${!execution.comment.isEmpty()}">Execution Comment:
+                <span class="comment-view">[[${execution?.comment}]]</span>
+            </p>
+
+            <!-- Execution's steps -->
+            <p id="steps-title">Steps:</p>
+            <ul id="steps-list" class="steps-list">
+                <li class="step-item" th:each="step, iterStat : ${steps}">
+                    <div class="step-details">
+
+                        <!-- Step's description -->
+                        <p>Step:
+                            <span th:text="${step.description}"></span>
+                        </p>
+
+                        <!-- Step's status -->
+                        <p>Status:
+                            <span class="step-status">
+                                <span th:if="${step.status == T(fr.uha.ensisa.gl.testsquad.mantest.status.StepStatus).UNDEFINED}">Undefined</span>
+                                <span th:if="${step.status == T(fr.uha.ensisa.gl.testsquad.mantest.status.StepStatus).IN_PROGRESS}">In Progress</span>
+                                <span th:if="${step.status == T(fr.uha.ensisa.gl.testsquad.mantest.status.StepStatus).ACCEPTED}">Accepted</span>
+                                <span th:if="${step.status == T(fr.uha.ensisa.gl.testsquad.mantest.status.StepStatus).REFUSED}">Refused</span>
+                            </span>
+                        </p>
+
+                        <!-- Step's comment -->
+                        <p th:if="${!step.comment.isEmpty()}">Step Comment:
+                            <span class="step-comment-view">[[${step.comment}]]</span>
+                        </p>
+
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Execution's creation date -->
+            <p>Creation Date:
+                <span class="step-creation-date-view"
+                      th:text="${execution.date != null ? #temporals.format(execution.date, 'yyyy-MM-dd HH:mm:ss') : 'N/A'}"></span>
+            </p>
+    </div>
+
+    <div>
+        <a th:href="@{'/testReport?id=' + ${test.id}}" class="back-link test-report">Return to this test report page</a>
+        <a th:href="@{/report}" class="back-link report">Return to report page</a>
+    </div>
+
+</main>
+
+<footer th:replace="../fragments/template :: footer"></footer>
+
+</body>
+</html>

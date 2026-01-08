@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Test Report</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/report.css}" />
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+</head>
+
+<body>
+<header th:replace="../fragments/template :: header"></header>
+
+<main>
+    <h2>Test Report</h2>
+
+    <div class="rapport" th:if="${errorMessage == null}">
+        <p>Test:
+            <a class="test-link" th:href="@{'/test?id=' + ${test.id}}">
+                <span class="name">[[${test.name}]]</span>
+            </a>
+        </p>
+
+        <p class="status-title">Status:
+            <span class="test-status" th:text="${test.status}">[[${test.status}]]</span> <!-- Affichage du statut -->
+        </p>
+
+        <p th:if="${!test.description.isEmpty()}">Description:
+            <span class="description">[[${test.description}]]</span>
+        </p>
+
+        <ul>
+            <li class="test-item" th:each="execution: ${executions}" th:id="${'execution_' + execution.id}">
+                <p>Execution:
+                    <a class="execution-link" th:href="@{'/execution?id=' + ${execution.id}}"
+                       th:text="${execution.date != null ? #temporals.format(execution.date, 'yyyy-MM-dd HH:mm:ss') : 'N/A'}">
+                    </a>
+                </p>
+                <p>Status:
+                    <span class="status" th:text="${execution.status}"></span>
+                </p>
+                <p th:if="${!execution.comment.isEmpty()}">Comment:
+                    <span class="comment-view" th:text="${execution.comment}"></span>
+                </p>
+                <ul class="step-results">Steps:
+                    <li th:each="stepExecution : ${execution.steps}">
+                        <span class="step-name">[[${stepExecution.step.description}]]:</span>
+                        <span class="step-status" th:text="${stepExecution.status}"></span>
+                        <span th:text="${stepExecution.comment}"></span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div th:if="${errorMessage == null}">
+        <a class="back-link" th:href="@{/report}">Return to report page</a>
+    </div>
+
+    <div class="error" th:if="${errorMessage != null}">
+        <h3 class="error-message" th:text="${errorMessage}"></h3>
+        <a class="back-link" th:href="@{/}">Return to home page</a>
+    </div>
+</main>
+
+<footer th:replace="../fragments/template :: footer"></footer>
+</body>
+</html>

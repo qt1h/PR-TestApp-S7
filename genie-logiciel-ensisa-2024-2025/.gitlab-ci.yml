@@ -1,0 +1,520 @@
+image: maven:3-eclipse-temurin-17 # Default container image 
+
+# Reusable properties
+variables:
+  MAVEN_CLI_OPTS: "--batch-mode -s settings.xml -Dmaven.repo.local=libs"
+  #  MAVEN_CLI_OPTS: "--batch-mode -Dmaven.repo.local=libs"
+  DOCKER_HOST: tcp://docker:2375
+  GITLAB_TOKEN: ""
+
+# Cache to speed up builds
+cache:
+  key: ${CI_COMMIT_BRANCH}
+  paths:
+    - "libs"
+    - "**/target"
+    - "mantest-app/gatling"
+
+# Define stages
+stages:
+  - build
+  - test
+  - verify
+  - report
+  - start_container
+  - ecobench
+  - stop_container
+  - deploy
+  - run
+
+# Stage 1: Build
+compile:
+  stage: build
+  rules:
+    - when: always
+  script:
+    - mvn $MAVEN_CLI_OPTS dependency:go-offline
+    - mvn $MAVEN_CLI_OPTS clean compile
+
+# Stage 2: Test
+test:
+  stage: test
+  rules:
+    - when: always
+  script:
+    - mvn $MAVEN_CLI_OPTS test 
+      -Dmaven.main.skip=true
+  artifacts:
+    paths:
+      - "**/target/surefire-reports/*"
+      - "**/target/jacoco.exec"
+    reports:
+      junit: "**/target/surefire-reports/*.xml"
+    expire_in: 1 week
+
+# Stage 3.1: Integration
+integration:
+  stage: verify
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  services:
+    - name: selenium/standalone-firefox:128.0-geckodriver-0.35-20250202 # Adds a Selenium container for WebDriver tests
+      alias: selenium
+  script:
+    - echo "127.0.0.1 maven" | tee -a /etc/hosts
+    - mvn $MAVEN_CLI_OPTS install -Dskip.remoteIT=false -Dwebdriver.url="http://selenium:4444/wd/hub" -Dhost="maven"
+      -Dmaven.main.skip=true
+      -Dskip.tests=true -Dskip.spotbugs=true
+      -Dskip.jacoco.report=true -Dskip.jacoco.check=true -Dskip.jacoco.aggregate=true
+      -Dskip.pitest.mutation=true -Dskip.pitest.aggregate=true
+
+  artifacts:
+    paths:
+      - "**/target/failsafe-reports/*" # Include HTML and all other coverage files
+      - "**/target/*.war"
+    reports:
+      junit: "**/target/failsafe-reports/*.xml"
+    expire_in: 1 week
+
+# Stage 3.2: Pitest
+pitest:
+  stage: verify
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  script:
+    - mvn $MAVEN_CLI_OPTS verify
+      -Dmaven.main.skip=true
+      -Dskip.tests=true -Dskip.integration=true -Dskip.spotbugs=true
+      -Dskip.jacoco.report=true -Dskip.jacoco.check=true -Dskip.jacoco.aggregate=true
+      -Dskip.pitest.aggregate=true
+  artifacts:
+    paths:
+      - "**/target/pit-reports/*" # Include HTML and all other coverage files
+    expire_in: 1 week
+
+# Stage 3.3: Spotbugs
+spotbugs:
+  stage: verify
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  script:
+    - mvn $MAVEN_CLI_OPTS verify
+      -Dmaven.main.skip=true
+      -Dskip.tests=true -Dskip.integration=true
+      -Dskip.jacoco.report=true -Dskip.jacoco.check=true -Dskip.jacoco.aggregate=true
+      -Dskip.pitest.mutation=true -Dskip.pitest.aggregate=true
+  artifacts:
+    paths:
+      - "**/target/spotbugsXml.xml" # Include HTML and all other coverage files
+    expire_in: 1 week
+
+# Stage 4.1: Jacoco
+jacoco_report:
+  stage: report
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  script:
+    - rm -rf mantest-aggregate/target/jacoco-aggregate/
+    - mvn $MAVEN_CLI_OPTS verify
+      -Dmaven.main.skip=true
+      -Dskip.tests=true -Dskip.integration=true -Dskip.spotbugs=true
+      -Dskip.pitest.mutation=true -Dskip.pitest.aggregate=true
+    - chmod +x ./mantest-aggregate/coverage.sh
+    - ./mantest-aggregate/coverage.sh
+  coverage: '/JaCoCo Coverage:\s+(\d+)%/'
+  artifacts:
+    paths:
+      - "**/target/site/jacoco/*"
+      - "mantest-aggregate/target/jacoco-aggregate/*" # Include HTML and all other coverage files
+    reports:
+      coverage_report:
+        coverage_format: jacoco
+        path: "mantest-aggregate/target/jacoco-aggregate/jacoco.xml"
+    expire_in: 1 week
+
+# Stage 4.2: Pitest
+pitest_report:
+  stage: report
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  script:
+    - rm -rf mantest-aggregate/target/pit-reports/
+    - mvn $MAVEN_CLI_OPTS verify
+      -Dmaven.main.skip=true
+      -Dskip.tests=true -Dskip.integration=true -Dskip.spotbugs=true
+      -Dskip.jacoco.report=true -Dskip.jacoco.check=true -Dskip.jacoco.aggregate=true
+      -Dskip.pitest.mutation=true
+    - chmod +x ./mantest-aggregate/mutation_csv_aggregate.sh
+    - chmod +x ./mantest-aggregate/mutation.sh
+    - ./mantest-aggregate/mutation_csv_aggregate.sh
+    - ./mantest-aggregate/mutation.sh
+  coverage: '/Pitest Coverage:\s+(\d+)%/'
+  artifacts:
+    paths:
+      - "mantest-aggregate/target/pit-reports/*" # Include HTML and all other coverage files
+    expire_in: 1 week
+
+# Stage 5.1 ecobench setup
+start_containers:
+  stage: start_container
+  image: docker
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  variables:
+    DOCKER_HOST: "tcp://dind:2375"
+  script:
+    # Part 1 Setup
+    # Wait until docker server is free from other similar tasks
+    - docker ps -a
+    - while [ "1" -eq $(docker ps -qa -f name="helper" | wc -l) ]; do echo "Waiting for docker host to be free"; sleep 5; done
+    # actually do the setup
+    - docker compose down -v || /bin/true
+    - docker stop $(docker ps -q --filter name=metrologie-*) || /bin/true # in case ecoextension was not properly stopped
+    - docker rm $(docker ps -qa --filter name=metrologie-*) || /bin/true # in case ecoextension was not properly stopped
+    # docker compose does not care about mounting remote files
+    - docker create -v `pwd`/docker:/docker --name helper -it busybox /bin/sh
+    - docker cp ./docker helper:/
+    - docker compose up -d --build
+    - docker ps -a
+
+# Stage 6.1 ecobench
+ecobench:
+  stage: ecobench
+  variables:
+    GATLING_VERSION: "3.9.5"
+    DOCKER_HOST: "tcp://dind:2375"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  script:
+    # Part 2 Simulation
+    - mvn $MAVEN_CLI_OPTS test -Dskip.ecobench=false -Dskip.tests=true -Dmaven.main.skip=true
+  artifacts: # results of the stage
+    paths:
+      - "**/target/ecoconception/*"
+    reports:
+      junit:
+        - "mantest-app/target/surefire-reports/*BenchTest.xml"
+      metrics:
+        - "mantest-app/target/ecoconception/*/metrics.prom"
+    expire_in: 1 week
+
+.stop_containers: &stop_containers
+  image: docker
+  variables:
+    DOCKER_HOST: "tcp://dind:2375"
+  script:
+    - cd mantest-app
+    - docker compose down -v || /bin/true
+    - docker rm helper || /bin/true
+    - docker ps -a
+
+# Stage 7.1 tear down
+cleanup_containers:
+  <<: *stop_containers
+  stage: stop_container
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: always
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: always
+    - if: '$CI_COMMIT_REF_NAME == "main" || $CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+      when: always
+
+# Stage 8.1: deploy Docker
+deploy-docker:
+  stage: deploy
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  rules:
+      - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      - if: '$CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  script:
+    - WARFILE=$(find . -name '*.war' -path '*/target/*' -print0)
+    - cp $WARFILE $CI_PROJECT_DIR/ROOT.war
+    # Check https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - alias build='/kaniko/executor --cleanup --registry-mirror docker.cluster.ensisa.uha.fr --context $CI_PROJECT_DIR'
+    - |
+      echo "FROM tomcat:11-jre17-temurin
+      RUN rm -rf ${CATALINA_HOME}/webapps/*
+      COPY ./ROOT.war \${CATALINA_HOME}/webapps/${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}.war" > Dockerfile
+    - build --destination "$CI_REGISTRY_IMAGE:${CI_COMMIT_TAG:-latest}"
+
+# Stage 8.2: deploy prod Docker
+deploy-docker-prod:
+  stage: deploy
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  script:
+    - WARFILE=$(find . -name '*.war' -path '*/target/*' -print0)
+    - cp $WARFILE $CI_PROJECT_DIR/ROOT.war
+    # Check https://docs.gitlab.com/ee/ci/variables/predefined_variables.html
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - alias build='/kaniko/executor --cleanup --registry-mirror docker.cluster.ensisa.uha.fr --context $CI_PROJECT_DIR'
+    - |
+      echo "FROM tomcat:11-jre17-temurin
+      RUN rm -rf ${CATALINA_HOME}/webapps/*
+      COPY ./ROOT.war \${CATALINA_HOME}/webapps/${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}.war" > Dockerfile
+    - build --destination "$CI_REGISTRY_IMAGE:${CI_COMMIT_TAG:-prod}"
+
+# Stage 9.1: deploy kubernetes
+.kubernetes: &kubernetes
+  stage: run
+  image: docker-private.cluster.ensisa.uha.fr/docker/kubectl
+  script:
+    # Setup kubectl
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}" --certificate-authority=${K8S_CERTIFICATE_AUTHORITY}
+    - kubectl config set-credentials gitlab-ci --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-ci
+    - kubectl config use-context default
+
+    # Kubernetes deployment file
+    - APP_NAME="${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}"
+    - NAMESPACE="gitlab-cd-${ENV}"
+    - kubectl -n ${NAMESPACE} create secret docker-registry $APP_NAME-registry-secret --docker-server=${CI_REGISTRY} --docker-username=${CI_DEPLOY_USER} --docker-password=${CI_DEPLOY_PASSWORD} --dry-run -o yaml | kubectl -n ${NAMESPACE} apply -f -
+    - |
+      echo "
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        labels:
+          app: $APP_NAME
+        name: $APP_NAME
+        namespace: $NAMESPACE
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: $APP_NAME
+        template:
+          metadata:
+            labels:
+              app: $APP_NAME
+          spec:
+            containers:
+              - image: "$CI_REGISTRY_IMAGE:${CI_COMMIT_TAG:-latest}"
+                imagePullPolicy: Always
+                name: $APP_NAME
+                ports:
+                  - name: http
+                    containerPort: 8080
+            imagePullSecrets:
+              - name: $APP_NAME-registry-secret
+      ---
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: $APP_NAME-service
+        namespace: $NAMESPACE
+      spec:
+        type: ClusterIP
+        selector:
+          app: $APP_NAME
+        ports:
+          - name: http
+            protocol: TCP
+            port: 80
+            targetPort: 8080
+      ---
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: $APP_NAME-ingress
+        namespace: $NAMESPACE
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      spec:
+        rules:
+        - host: ${ENV}.cluster.ensisa.uha.fr
+          http:
+            paths:
+            - path: /$APP_NAME
+              pathType: Prefix
+              backend:
+                service:
+                  name: $APP_NAME-service
+                  port:
+                    number: 80
+      " > app.yml
+    - cat app.yml
+
+    # Deploy the yml
+    - kubectl ${ACTION} -f app.yml
+    - kubectl -n $NAMESPACE rollout restart deployment $APP_NAME 2>/dev/null || /bin/true
+
+# Stage 9.2: deploy prod kubernetes
+.kubernetes_prod: &kubernetes_prod
+  stage: run
+  image: docker-private.cluster.ensisa.uha.fr/docker/kubectl
+  script:
+    # Setup kubectl
+    - kubectl config set-cluster k8s --server="${K8S_SERVER}" --certificate-authority=${K8S_CERTIFICATE_AUTHORITY}
+    - kubectl config set-credentials gitlab-ci --token="${K8S_USER_TOKEN}"
+    - kubectl config set-context default --cluster=k8s --user=gitlab-ci
+    - kubectl config use-context default
+
+    # Kubernetes deployment file
+    - APP_NAME="${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}"
+    - NAMESPACE="gitlab-cd-${ENV}"
+    - kubectl -n ${NAMESPACE} create secret docker-registry $APP_NAME-registry-secret --docker-server=${CI_REGISTRY} --docker-username=${CI_DEPLOY_USER} --docker-password=${CI_DEPLOY_PASSWORD} --dry-run -o yaml | kubectl -n ${NAMESPACE} apply -f -
+    - |
+      echo "
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        labels:
+          app: $APP_NAME
+        name: $APP_NAME
+        namespace: $NAMESPACE
+      spec:
+        replicas: 1
+        selector:
+          matchLabels:
+            app: $APP_NAME
+        template:
+          metadata:
+            labels:
+              app: $APP_NAME
+          spec:
+            containers:
+              - image: "$CI_REGISTRY_IMAGE:${CI_COMMIT_TAG:-prod}"
+                imagePullPolicy: Always
+                name: $APP_NAME
+                ports:
+                  - name: http
+                    containerPort: 8080
+            imagePullSecrets:
+              - name: $APP_NAME-registry-secret
+      ---
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: $APP_NAME-service
+        namespace: $NAMESPACE
+      spec:
+        type: ClusterIP
+        selector:
+          app: $APP_NAME
+        ports:
+          - name: http
+            protocol: TCP
+            port: 80
+            targetPort: 8080
+      ---
+      apiVersion: networking.k8s.io/v1
+      kind: Ingress
+      metadata:
+        name: $APP_NAME-ingress
+        namespace: $NAMESPACE
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+      spec:
+        rules:
+        - host: ${ENV}.cluster.ensisa.uha.fr
+          http:
+            paths:
+            - path: /$APP_NAME
+              pathType: Prefix
+              backend:
+                service:
+                  name: $APP_NAME-service
+                  port:
+                    number: 80
+      " > app.yml
+    - cat app.yml
+
+    # Deploy the yml
+    - kubectl ${ACTION} -f app.yml
+    - kubectl -n $NAMESPACE rollout restart deployment $APP_NAME 2>/dev/null || /bin/true
+
+deploy-staging:
+  <<: *kubernetes
+  variables:
+    ENV: staging
+    ACTION: apply
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  environment:
+    name: staging
+    url: https://staging.cluster.ensisa.uha.fr/${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}
+    on_stop: stop-staging
+
+deploy-prod:
+  <<: *kubernetes_prod
+  variables:
+    ENV: prod
+    ACTION: apply
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  environment:
+    name: production
+    url: https://prod.cluster.ensisa.uha.fr/${CI_PROJECT_NAMESPACE}-${CI_PROJECT_NAME}
+    on_stop: stop-prod
+
+stop-staging:
+  <<: *kubernetes
+  variables:
+    ENV: staging
+    ACTION: delete
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_COMMIT_BRANCH =~ /^release\/0\.0\..*-Snapshot$/'
+  environment:
+    name: staging
+    action: stop
+
+stop-prod:
+  <<: *kubernetes_prod
+  variables:
+    ENV: prod
+    ACTION: delete
+  when: manual
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+  environment:
+    name: production
+    action: stop
+
+update_changelog:
+  stage: build
+  image: node:18
+  variables:
+    GIT_DEPTH: 0
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "develop" && $CI_COMMIT_MESSAGE =~ /^Merge branch/'
+  script:
+    - npm install -g conventional-changelog-cli
+    - conventional-changelog -p angular -i CHANGELOG.md -s --release-count 1
+    - git config --global user.email "ci-bot@example.com"
+    - git config --global user.name "CI Bot"
+    - rm -rf libs
+    - git add -A
+    - |
+      if ! git diff-index --quiet HEAD; then
+        git commit -m 'chore: mise à jour automatique par le bot [ci skip]'
+      else
+        echo "Pas de modification à commit"
+      fi
+    - git push https://gitlab-ci-token:${GITLAB_TOKEN}@gitlab.cluster.ensisa.uha.fr/gl2425-testsquad1/genie-logiciel-ensisa-2024-2025.git HEAD:$CI_COMMIT_REF_NAME

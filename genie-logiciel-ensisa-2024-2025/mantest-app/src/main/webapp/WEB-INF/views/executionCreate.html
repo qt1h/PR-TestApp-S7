@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create execution</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/executionCreate.css}" />
+    <link rel="stylesheet" th:href="@{/libs/fontawesome/css/all.min.css}">
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+</head>
+
+<body>
+<header th:replace="../fragments/template :: header"></header>
+
+<main>
+    <h2>Create execution</h2>
+
+    <!-- Error message if needed -->
+    <p th:if="${errorMessage != null}" class="error-message" th:text="${errorMessage}"></p>
+
+    <!-- Test's details -->
+    <div th:if="${errorMessage == null}" class="test-details">
+        <form th:action="@{/executionCreate}" method="post" class="form-update" accept-charset="utf-8">
+            <input type="hidden" name="id" th:value="${test?.id}" />
+
+            <!-- Test's name -->
+            <p>Name:
+                <span class="name-view">[[${test?.name}]]</span>
+            </p>
+
+            <!-- Test's description -->
+            <p th:if="${!test.description.isEmpty()}">Description:
+                <span class="description-view">[[${test?.description}]]</span>
+            </p>
+
+            <!-- Execution's global comment -->
+            <p class="form-group">
+                <label for="execution-comment">Execution Comment:</label>
+                <textarea id="execution-comment" name="executionComment" class="comment-edit form-control"></textarea>
+            </p>
+
+            <!-- Test's steps -->
+            <p id="steps-title"><strong>Steps:</strong></p>
+            <ul id="steps-list" class="steps-list">
+                <li th:class="'step-item-' + ${iterStat.index}" th:each="step, iterStat : ${steps}">
+                    <div class="step-details">
+
+                        <!-- Step's description -->
+                        <div class="step-info">
+                            <p>
+                                <span class="step-view" th:text="'Step: ' + ${iterStat.index+1} + '/' + ${stepsCount}"></span>
+                            </p>
+                            <p>Description:
+                                <span class="step-view">[[${step?.description}]]</span>
+                            </p>
+                        </div>
+
+                        <!-- Step's status -->
+                        <div class="step-extra" hidden="hidden">
+                            <label>
+                                <select class="step-status-edit form-control select-status step-status" name="stepsStatuses">
+                                    <option value="UNDEFINED" selected="selected">Undefined</option>
+                                    <option value="ACCEPTED">Accepted</option>
+                                    <option value="REFUSED">Refused</option>
+                                </select>
+                            </label>
+                        </div>
+
+                        <!-- Step's comment -->
+                        <div class="step-extra">
+                            <label>Step Comment:
+                                <textarea class="step-comment-edit form-control step-comment" name="stepsComments">Step wasn't run</textarea>
+                            </label>
+                        </div>
+
+                    </div>
+                </li>
+            </ul>
+
+            <!-- Action buttons -->
+            <div class="form-actions">
+                <button type="button" id="previous-button" class="cta-btn small">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+
+                <button type="button" id="x-button" class="cta-btn small">
+                    <i class="fa-solid fa-x"></i>
+                </button>
+
+                <button type="button" id="check-button" class="cta-btn small">
+                    <i class="fa-solid fa-check"></i>
+                </button>
+
+                <!-- Bouton caché utilisé par le js -->
+                <button type="submit" id="save-button" class="cta-btn small" hidden="hidden"></button>
+            </div>
+        </form>
+
+    </div>
+
+    <a th:href="@{/testList}" class="back-link">Return to test list</a>
+</main>
+
+<footer th:replace="../fragments/template :: footer"></footer>
+
+<script type="text/javascript" th:src="@{/resources/js/executionCreate.js}"></script>
+</body>
+</html>

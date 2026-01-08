@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Application</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+
+</head>
+
+<body>
+<header th:replace="../fragments/template :: header"></header>
+
+<main>
+    <div>
+        <h2>Developper's tools</h2>
+        <form
+                th:action="@{/reset}"
+                method="post"
+                accept-charset="utf-8"
+        >
+            <button id="reset-button" type="submit" class="cta-btn">Reset</button>
+        </form>
+    </div>
+
+
+</main>
+
+<footer th:replace="../fragments/template :: footer"></footer>
+</body>
+</html>

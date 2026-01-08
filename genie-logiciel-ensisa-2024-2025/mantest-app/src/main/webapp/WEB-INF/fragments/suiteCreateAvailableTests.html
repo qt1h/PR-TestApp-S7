@@ -1,0 +1,9 @@
+<div th:fragment="availableTests">
+  <ul>
+    <li th:each="test : ${tests}">
+      <input type="checkbox" th:id="${'test_' + test.id}" th:value="${test.id}" class="test-checkbox" />
+      <label th:for="${'test_' + test.id}" th:text="${test.name}"></label>
+      <span class="order-display"></span>
+    </li>
+  </ul>
+</div>

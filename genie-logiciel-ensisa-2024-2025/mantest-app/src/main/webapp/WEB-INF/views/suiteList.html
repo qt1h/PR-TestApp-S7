@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Suite List</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/suiteList.css}" />
+    <link rel="stylesheet" th:href="@{/libs/fontawesome/css/all.min.css}" />
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+  </head>
+  <body>
+    <header th:replace="../fragments/template :: header"></header>
+
+    <!-- Barre de recherche similaire à testList -->
+    <div class="InputContainer">
+      <input
+        placeholder="Search"
+        id="input"
+        class="input"
+        name="text"
+        type="text"
+      />
+      <label class="labelforsearch" for="input">
+        <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+      </label>
+    </div>
+    <div class="search-results">
+      <span class="results-count" id="resultsCount"></span>
+    </div>
+
+    <main>
+      <h2>These are your suites</h2>
+
+      <div class="suites-list" th:if="${errorMessage == null}">
+        <ul id="suites">
+          <li
+            class="suite-item"
+            th:each="suite : ${suites}"
+            th:id="${'suite_' + suite.id}"
+          >
+            <a
+              class="suite-link cta-btn"
+              th:href="@{'/suiteDetails?id=' + ${suite.id}}"
+            >
+              <span class="name">[[${suite.name}]]</span>
+            </a>
+            <span>Description:</span>
+            <span class="description">[[${suite.description}]]</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="error" th:if="${errorMessage != null}">
+        <h3 class="error-message" th:text="${errorMessage}"></h3>
+        <a class="cta-btn" th:href="@{/}">Return to home page</a>
+      </div>
+    </main>
+
+    <footer th:replace="../fragments/template :: footer"></footer>
+    <script th:src="@{/resources/js/suiteList.js}"></script>
+  </body>
+</html>

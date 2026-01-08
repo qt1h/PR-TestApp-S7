@@ -1,0 +1,262 @@
+/* Conteneur principal */
+main {
+    background: var(--secondary-color);
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 700px;
+    width: 90%;
+    margin: 3rem auto;
+    border: 1px solid var(--accent-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 600px; /* Taille fixe pour éviter l'extension de la page */
+    overflow: hidden;
+}
+
+.hidden {
+    display: none;
+}
+
+
+/* Titre principal */
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    color: var(--text-color);
+    text-align: center;
+    width: 100%;
+}
+
+/* Wrapper de la liste des tests - Remplit toute la hauteur du conteneur */
+.tests-list {
+    width: 100%;
+    max-width: 650px;
+    padding: 1.5rem;
+    flex-grow: 1; /* Fait en sorte que la liste remplisse le conteneur */
+    min-height: 0; /* Corrige le problème d'extension de la liste */
+    overflow-y: auto; /* Active le scroll vertical */
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--secondary-color);
+}
+
+/* Rendre la scrollbar visible */
+.tests-list::-webkit-scrollbar {
+    width: 8px; /* Augmenté pour plus de visibilité */
+}
+
+.tests-list::-webkit-scrollbar-track {
+    background: var(--secondary-color); /* Conserve la couleur du fond */
+    border-radius: 4px;
+}
+
+.tests-list::-webkit-scrollbar-thumb {
+    background: var(--accent-color); /* Accentue la visibilité */
+    border-radius: 4px;
+}
+
+.tests-list::-webkit-scrollbar-thumb:hover {
+    background: var(--button-hover);
+}
+
+/* Liste des tests - Remplit la liste sans dépasser */
+#tests {
+    width: 100%;
+    flex-grow: 1; /* Remplit l'espace de .tests-list */
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Élément test optimisé */
+.test-item {
+    width: 80%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 0.6rem;
+    min-height: 50px;
+    gap: 1rem;
+    flex-wrap: nowrap; /* Empêche les retours à la ligne */
+}
+
+/* Effet au survol */
+.test-item:hover {
+    transform: scale(1.02);
+}
+
+/* Lien du test - Centré si court, aligné à gauche si long */
+.test-link {
+    flex-shrink: 0;
+    width: 100px; /* Taille fixe */
+    text-align: center; /* Par défaut, le texte est centré */
+    color: var(--text-color);
+    padding: 0.4rem 1rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease-in-out;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+/* Gère le texte interne pour couper proprement */
+.test-link span {
+    max-width: 90%; /* Permet de détecter quand il est trop long */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Si le texte dépasse la largeur du bouton, il s'aligne à gauche */
+.test-link span.too-long {
+    text-align: left;
+    width: 100%;
+    padding-left: 10px; /* Ajoute un léger décalage pour l'esthétique */
+}
+
+.test-link:hover {
+    background: var(--button-hover);
+}
+
+/* Texte "Description:" */
+.test-item span {
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--text-color);
+    text-align: center;
+}
+
+/* Zone de description - Gère le texte trop long */
+.description {
+    flex-grow: 1;
+    max-width: calc(100% - 180px); /* Ajuste en fonction de la largeur du bouton */
+    text-align: left;
+    padding: 0.4rem 0.8rem;
+    background: var(--secondary-color);
+    border-radius: 0.3rem;
+    border: 2px solid var(--accent-color); /* Contour plus visible */
+    border-left: 5px solid var(--accent-color); /* Bordure gauche plus marquée */
+
+    /* Gestion du texte trop long */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; /* Empêche le retour à la ligne */
+    max-height: 50px; /* Limite la hauteur */
+}
+
+/* Permet de forcer le retour à la ligne si besoin */
+.description:hover {
+    white-space: normal; /* Retour à la ligne si nécessaire */
+    word-wrap: break-word;
+    overflow-y: auto; /* Active un scroll si trop de texte */
+}
+
+/* Section erreur */
+.error {
+    width: 100%;
+    padding: 3rem 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.error h3 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.cta-btn {
+    background: var(--button-color);
+    color: var(--text-color);
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.cta-btn:hover {
+    background: var(--button-color-hover);
+}
+
+/* barre de recherche */
+/* Conteneur de la barre de recherche */
+.InputContainer {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+}
+
+/* Style de l'input */
+.input {
+    width: 100%;
+    padding: 0.8rem 2.5rem 0.8rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--accent-color);
+    border-radius: 0.5rem;
+    background: var(--secondary-color);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+/* Focus sur l'input */
+.input:focus {
+    border-color: var(--button-hover);
+}
+
+/* Style de l'icône de recherche */
+.labelforsearch {
+    position: absolute;
+    right: 0.8rem;
+    cursor: pointer;
+}
+
+.searchIcon {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: var(--accent-color);
+    transition: fill 0.3s ease-in-out;
+}
+
+.labelforsearch:hover .searchIcon {
+    fill: var(--button-hover);
+}
+
+/* Résultats de recherche */
+.search-results {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    padding-left: 0.5rem;
+}
+
+/* Effet de surlignement pour les résultats de recherche */
+.highlight {
+    background-color: yellow; /* Couleur de fond pour le surlignement */
+    font-weight: bold;         /* Optionnel, pour rendre le texte plus visible */
+    color : black !important;
+    display: inline-block;
+
+}
+
+.highlight.active {
+    background-color: #ffcc00; /* Un fond plus intense quand l'élément est actif */
+    color: black !important ;               /* Change la couleur du texte pour plus de visibilité */
+}

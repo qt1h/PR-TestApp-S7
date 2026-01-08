@@ -1,0 +1,161 @@
+/* Ajout du box-sizing global */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Conteneur principal */
+main {
+    background: var(--secondary-color);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    max-width: 700px;
+    width: 90%;
+    margin: 3rem auto;
+    margin-top: 0.7rem;
+    border: 1px solid var(--accent-color);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: auto;
+    overflow: hidden;
+}
+
+/* Titre principal */
+main h2 {
+    text-align: center; /* Centrer le titre du conteneur */
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem; /* Espacement sous le titre */
+    color: var(--text-color);
+}
+
+
+/* Message d'erreur */
+.error-message {
+    color: var(--error-color);
+    background: var(--error-bg);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Détails de l'exécution */
+.execution-details {
+    width: 100%;
+    padding: 1.5rem;
+    background: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Détail d'un champ de l'exécution */
+.execution-details p {
+    font-size: 1rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+}
+
+/* Détail des valeurs */
+.execution-details span {
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+/* Style pour chaque étape (boîte autour en état normal) */
+.step-item {
+    width: 100%;
+    max-width: 650px;
+    padding: 1rem;
+    margin: 1rem 0;
+    background-color: var(--secondary-color); /* Fond de l'étape */
+    border: 2px solid var(--accent-color); /* Bordure */
+    border-radius: 0.6rem; /* Coins arrondis */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Ombre discrète pour donner du relief */
+    transition: box-shadow 0.3s ease-in-out;
+    align-items: flex-start; /* Aligne le contenu vers la gauche */
+}
+
+/* Style de l'état de l'étape (au survol) */
+.step-item:hover {
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Ombre plus marquée au survol */
+    transform: scale(1.02); /* Légère augmentation de taille */
+}
+
+/* Détails supplémentaires pour le texte à l'intérieur des étapes */
+.step-details p {
+    margin: 0.5rem 0;
+}
+
+/* Commentaire de l'étape */
+.step-comment-view {
+    font-size: 0.9rem;
+    color: var(--text-color);
+    font-style: italic;
+}
+
+/* Statut de l'étape */
+.step-status {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+/* Lien retour (modification du style sans vert) */
+.back-link {
+    margin-top: 2rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+    padding: 0.6rem 1.2rem;
+    background-color: var(--tertiary-color);
+    border-radius: 0.5rem;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.back-link:hover {
+    background-color: var(--secondary-color);
+    color: var(--accent-color);
+}
+
+
+/* Style pour les liens d'exécution */
+.execution {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.execution:hover {
+    color: var(--button-hover);
+}
+
+/* Styles pour les étapes */
+.step-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Style pour les commentaires */
+.comment-view {
+    color: var(--text-color);
+    font-style: italic;
+}
+
+.comment-view:hover {
+    text-decoration: underline;
+}
+
+/* Amélioration de l'apparence de la page */
+footer {
+    margin-top: 2rem;
+}

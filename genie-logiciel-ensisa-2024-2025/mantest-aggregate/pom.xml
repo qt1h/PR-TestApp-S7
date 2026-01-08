@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>fr.uha.ensisa.gl.testsquad</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.4-Snapshot</version>
+    </parent>
+
+    <artifactId>mantest-aggregate</artifactId>
+    <version>0.0.4-Snapshot</version>
+    <packaging>pom</packaging>
+
+
+    <dependencies>
+        <dependency>
+            <groupId>fr.uha.ensisa.gl.testsquad</groupId>
+            <artifactId>mantest-dao-mem</artifactId>
+            <version>${mantest.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.uha.ensisa.gl.testsquad</groupId>
+            <artifactId>mantest-model</artifactId>
+            <version>${mantest.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.uha.ensisa.gl.testsquad</groupId>
+            <artifactId>mantest-app</artifactId>
+            <version>${mantest.version}</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
+                <configuration>
+                    <skip>${skip.jacoco.aggregate}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>default-prepare-agent</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>default-report</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>default-check</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.jacoco.aggregate}</skip>
+                            <outputDirectory>${project.build.directory}/jacoco-aggregate</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${pitest.version}</version>
+                <executions>
+                    <execution>
+                        <id>mutation-testing</id>
+                        <phase>none</phase>
+                    </execution>
+                    <execution>
+                        <id>report-aggregate</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report-aggregate</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.pitest.aggregate}</skip>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>${spotbugs.version}</version>
+                <executions>
+                    <execution>
+                        <id>default-check</id>
+                        <phase>none</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+</project>

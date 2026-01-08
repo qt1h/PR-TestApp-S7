@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>fr.uha.ensisa.gl.testsquad</groupId>
+        <artifactId>parent</artifactId>
+        <version>0.0.4-Snapshot</version>
+    </parent>
+
+    <artifactId>mantest-app</artifactId>
+    <version>0.0.4-Snapshot</version>
+    <packaging>war</packaging>
+
+    <name>mantest-app</name>
+    <url>https://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>17</java.version>
+        <servlet.port>8080</servlet.port>
+        <jetty.stop.port>9000</jetty.stop.port>
+        <spring.version>6.2.1</spring.version>
+        <cglib.version>3.3.0</cglib.version>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>fr.uha.ensisa.gl.testsquad</groupId>
+            <artifactId>mantest-dao-mem</artifactId>
+            <version>${mantest.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>fr.uha.ensisa.eco.metrologie</groupId>
+            <artifactId>junit-extension</artifactId>
+            <version>1.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>4.27.0</version> <!-- check http://search.maven.org/ !!! -->
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Spring core & mvc -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- CGLib for @Configuration -->
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>${cglib.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+
+        <!-- Servlet Spec -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>3.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Jakarta -->
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>5.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Thymeleaf -->
+        <dependency>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf-spring6</artifactId>
+            <version>3.1.2.RELEASE</version>
+        </dependency>
+
+        <!-- JSR-330 for @Inject -->
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+
+        <!-- Jackson JSON Mapper -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+
+    </dependencies>
+
+
+    <repositories>
+        <repository>
+            <id>springsource-milestones</id>
+            <name>SpringSource Milestones Proxy</name>
+            <url>https://oss.sonatype.org/content/repositories/springsource-milestones</url>
+        </repository>
+
+        <repository>
+            <id>gitlab-maven</id>
+            <url>https://gitlab.cluster.ensisa.uha.fr/api/v4/projects/105/packages/maven</url>
+        </repository>
+    </repositories>
+
+    <build>
+        <finalName>${project.name}</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.4.0</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.5.2</version>
+                <executions>
+                    <execution>
+                        <id>default-test</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.tests}</skip>
+                            <excludes>*IT.java, *BenchTest.java</excludes>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>ecobench</id>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <configuration>
+                            <skip>${skip.ecobench}</skip>
+                            <includes>*BenchTest.java</includes>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>11.0.16</version>
+                <configuration>
+                    <skip>${skip.integration}</skip>
+                    <httpConnector>
+                        <port>${servlet.port}</port>
+                    </httpConnector>
+                    <stopKey>quit</stopKey>
+                    <stopPort>${jetty.stop.port}</stopPort>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                    </webApp>
+                    <scan>5</scan>
+                    <scanTargetPatterns>
+                        <scanTargetPattern>
+                            <directory>src/main/webapp/WEB-INF</directory>
+                            <includes>
+                                <include>**/*.html</include>
+                            </includes>
+                            <excludes>
+                                <include>**/*.properties</include>
+                            </excludes>
+                        </scanTargetPattern>
+                    </scanTargetPatterns>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-it</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <jettyProperties>
+                                <scanIntervalSeconds>0</scanIntervalSeconds>
+                                <daemon>true</daemon>
+                            </jettyProperties>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop-it</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>3.1.2</version>
+                <configuration>
+                    <skip>${skip.integration}</skip>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>perform-it</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                        <configuration>
+                            <systemPropertyVariables>
+                                <property>
+                                    <name>servlet.port</name>
+                                    <value>${servlet.port}</value>
+                                </property>
+                                <property>
+                                    <name>name</name>
+                                    <value>${project.name}</value>
+                                </property>
+                            </systemPropertyVariables>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>verify-it</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.pitest</groupId>
+                <artifactId>pitest-maven</artifactId>
+                <version>${pitest.version}</version>
+                <configuration>
+                    <skip>${skip.pitest.mutation}</skip>
+                    <targetClasses>
+                        <param>fr.uha.ensisa.gl.testsquad.controller*</param>
+                    </targetClasses>
+                    <targetTests>
+                        <param>fr.uha.ensisa.gl.testsquad.controller*Test</param>
+                    </targetTests>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

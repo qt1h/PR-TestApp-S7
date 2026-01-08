@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <title>Test Created</title>
+    <script type="text/javascript">
+      window.onload = function () {
+        // Appeler testCreated() sur la page parente
+        if (window.parent && typeof window.parent.testCreated === "function") {
+          window.parent.testCreated();
+        }
+        // Récupérer le contextPath à partir de la balise meta de la page parente
+        var meta = window.parent.document.querySelector(
+          'meta[name="contextPath"]'
+        );
+        var contextPath = meta ? meta.getAttribute("content") : "";
+        if (contextPath === "/" || contextPath === "null") {
+          contextPath = "";
+        }
+        setTimeout(function () {
+          window.location.href = contextPath + "/testCreate?embedded=true";
+        }, 1000);
+      };
+    </script>
+  </head>
+  <body>
+    <p>Test created successfully. Closing...</p>
+  </body>
+</html>

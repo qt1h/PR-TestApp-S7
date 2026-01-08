@@ -1,0 +1,290 @@
+/* === MODALE DE CRÉATION DE TEST === */
+
+/* Fond d’arrière-plan flouté */
+#testCreateModal {
+  /* cachée par défaut */
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(2px);
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+#testCreateModal > header {
+  border: none !important;
+  background: transparent !important;
+}
+
+
+/* L’iframe qui contient le formulaire */
+#testCreateModal iframe {
+  width: 100%;
+  height: 100%;
+  max-width: 900px;
+  max-height: 90%;
+  border: none;
+  border-radius: 1rem;
+  box-shadow: 0 0 20px rgba(255, 105, 180, 0.3);
+  background-color: var(--secondary-color);
+}
+
+/* Header contenant le bouton "Close" */
+#testCreateModal > header {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1001;
+}
+
+#testCreateModal > header button {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  background: var(--button-color); /* rose/rouge */
+  color: var(--text-color);
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#testCreateModal > header button:hover {
+  background: var(--button-color-hover);
+}
+
+/* Conteneur principal */
+main {
+  background: var(--secondary-color);
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 700px;
+  width: 90%;
+  margin: 3rem auto;
+  border: 1px solid var(--accent-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  overflow: visible;
+}
+
+/* Titre principal */
+h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--accent-color);
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1.2rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+}
+
+/* Formulaire */
+form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  gap: 1rem;
+  position: relative;
+  padding-bottom: 80px; /* Espace pour le bouton */
+}
+
+/* Groupes de formulaire */
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Labels */
+.form-group label {
+  font-weight: bold;
+  color: var(--accent-color);
+  font-size: 1rem;
+  align-self: flex-start;
+}
+
+/* Champs de saisie */
+.form-control {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1px solid var(--text-color);
+  border-radius: 0.3rem;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+/* Champ de description */
+textarea.form-control {
+  resize: none;
+  height: 120px;
+}
+
+/* Input Step + Bouton Add */
+.input-group {
+  display: flex;
+  width: 100%;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Bouton "Add" */
+.cta-btn.small {
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  min-width: 85px;
+  text-align: center;
+  background: var(--accent-color);
+  color: var(--text-color);
+  font-weight: bold;
+  border-radius: 0.3rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Liste des étapes */
+#dynamic-list {
+  width: 100%;
+  padding: 0;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--accent-color);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Style des éléments de la liste */
+#dynamic-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--text-color);
+  color: var(--text-color);
+}
+
+/* Scrollbar */
+#dynamic-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+#dynamic-list::-webkit-scrollbar-thumb {
+  background: var(--accent-color);
+  border-radius: 4px;
+}
+
+/* Groupe du bouton submit */
+.submit-group {
+  position: absolute;
+  bottom: 1rem;
+  left: 0; /* Utilise 0 ici et pas 50% */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  transform: none; /* Enlève translateX pour éviter les décalages inutiles */
+}
+
+/* Bouton "Create" */
+#create-btn {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50%;
+  padding: 1rem 2rem;
+  background: var(--accent-color);
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  text-align: center;
+}
+
+#create-btn:hover {
+  background: var(--button-hover);
+}
+.cta-btn.small:hover {
+  background: var(--button-hover);
+}
+
+/* Bouton "Create New Test" */
+.create-test-btn {
+  background: var(--button-color);
+  color: var(--text-color);
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  text-align: center;
+  width: fit-content;
+  min-width: 180px;
+  margin-top: 0.5rem;
+}
+
+.create-test-btn:hover {
+  background: var(--button-color-hover);
+}
+
+/* ==== CHECKBOX CUSTOM STYLING ==== */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  background-color: var(--background-color);
+  border: 2px solid var(--accent-color);
+  padding: 0.4rem;
+  border-radius: 0.25rem;
+  display: inline-block;
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  cursor: pointer;
+  vertical-align: middle;
+  transition: all 0.2s ease-in-out;
+  margin-right: 0.5rem;
+}
+
+input[type="checkbox"]:hover {
+  box-shadow: 0 0 4px var(--accent-color);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+input[type="checkbox"]:checked::after {
+  content: '✔';
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 1rem;
+  color: black;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 1.15rem;
+}
+#available-tests-container ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+

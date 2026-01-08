@@ -1,0 +1,404 @@
+/* ===================== */
+/* STRUCTURE PRINCIPALE */
+/* ===================== */
+body, html {
+  text-align: center;
+}
+
+main {
+  background: var(--secondary-color);
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 700px;
+  width: 90%;
+  margin: 3rem auto;
+  border: 1px solid var(--accent-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: auto;
+  overflow: hidden;
+}
+
+section {
+  width: 100%;
+}
+
+.section-header {
+  display: flex;
+  font-weight: bold;
+  color: var(--accent-color);
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1.2rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+}
+
+.section-header button {
+  margin-right: 1rem;
+}
+
+.wheel-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.wheel-button i.fa-cog {
+  font-size: 24px;
+  color: #5e5d5d;
+  transition: transform 0.3s;
+}
+
+.wheel-button:hover i.fa-cog {
+  transform: rotate(90deg);
+  color: #007bff;
+}
+
+/* ===================== */
+/* FORM WRAPPER */
+/* ===================== */
+
+
+
+/* ===================== */
+/* CHAMPS FORMULAIRES */
+/* ===================== */
+
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+  word-break: break-all;
+}
+
+.name-view,
+.description-view {
+  color: var(--text-color);
+  padding-left: 0.2rem;
+  word-break: break-all;
+}
+
+/* ===================== */
+/* SEARCH BAR */
+/* ===================== */
+
+.InputContainer {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem auto;
+  display: flex;
+  align-items: center;
+}
+
+.InputContainer:focus-within .searchIcon {
+  transform: scale(1.1);
+}
+
+.input {
+  width: 100%;
+  padding: 0.8rem 2.5rem 0.8rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--accent-color);
+  border-radius: 0.5rem;
+  background: var(--secondary-color);
+  color: var(--text-color);
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.labelforsearch {
+  position: absolute;
+  right: 0.8rem;
+  cursor: pointer;
+}
+
+.searchIcon {
+  width: 18px;
+  height: 18px;
+  fill: var(--accent-color);
+  pointer-events: none;
+}
+
+.search-results {
+  width: 100%;
+  text-align: center;
+  margin: 0.2rem 0;
+  padding: 0.3rem;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  position: relative;
+  top: -5px; /* Alignement avec la barre de recherche */
+}
+
+.results-count {
+  background: var(--secondary-color);
+  padding: 0.4rem 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  font-size: 1.2rem; /* Augmentez la taille de la police ici */
+}
+
+/* Style pour "Aucun résultat" */
+.results-count.no-results {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+/* ===================== */
+/* LISTE DES TESTS */
+/* ===================== */
+
+#tests-list {
+  margin: 0;
+  padding: 0;
+}
+
+/* Élément test individuel */
+.test-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  outline: 0.125rem solid var(--accent-color);
+  border-radius: 0.625rem;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+.test-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem;
+}
+
+/* Drag handle */
+.drag-handle {
+  display: none; /* activé uniquement si tu veux */
+  cursor: grab;
+  color: var(--accent-color);
+}
+
+/* Structure en ligne : Test: nom description */
+.test-info label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+.test-info a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 17px;
+  display: inline-block; /* Assure que les éléments respectent les limites du parent */
+  max-width: 15rem; /* Limite la largeur à celle du parent */
+  overflow: hidden; /* Cache le contenu qui dépasse */
+  white-space: nowrap; /* Empêche les retours à la ligne */
+  text-overflow: ellipsis;
+}
+
+.test-info a:hover {
+  color: var(--button-hover);
+}
+
+.description {
+  color: rgba(255, 255, 255, 0.6);
+  padding-left: 3rem;
+  display: inline-block; /* Assure que les éléments respectent les limites du parent */
+  max-width: 15rem; /* Limite la largeur à celle du parent */
+  overflow: hidden; /* Cache le contenu qui dépasse */
+  white-space: nowrap; /* Empêche les retours à la ligne */
+  text-overflow: ellipsis;
+}
+
+.form-control {
+  padding: 0.8rem;
+  border: 0.075rem solid var(--text-color);
+  border-radius: 0.3rem;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+/* Cacher les champs cachés */
+input[type="hidden"],
+select {
+  display: none !important;
+}
+
+/* ===================== */
+/* BOUTONS */
+/* ===================== */
+
+.buttons-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  gap: 1rem;
+}
+
+.cta-btn,
+.btn-danger {
+  font-size: 1rem;
+  color: var(--text-color);
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 0.4rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease-in-out;
+}
+
+.cta-btn {
+  background: var(--button-color);
+}
+
+.cta-btn:hover {
+  background: var(--button-color-hover);
+}
+
+.btn-danger {
+  background: var(--accent-color);
+}
+
+.btn-danger:hover {
+  background: var(--button-hover);
+}
+
+.test-item .btn-danger.small {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.4rem;
+}
+
+/* ===================== */
+/* RESPONSIVE */
+/* ===================== */
+
+@media (max-width: 600px) {
+  main > section:first-child {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-wrapper {
+    padding: 1rem;
+  }
+
+  .buttons-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .test-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+}
+.form-delete {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+#delete-suite{
+    background: var(--accent-color);
+}
+
+a.cta-btn {
+  display: block;
+  width: fit-content;
+  margin: 2rem auto 0 auto;
+  text-align: center;
+}
+
+.back-link {
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  margin-top: 2rem;
+}
+
+.back-link:hover {
+  color: var(--text-color);
+}
+
+/* Highlight visible et contrasté */
+.highlight {
+  background-color: #ffe66d;
+  color: black;
+  font-weight: bold;
+  padding: 0 0.2rem;
+  border-radius: 0.2rem;
+}
+
+/* Supprime le décalage vertical des icônes */
+.test-item i {
+  line-height: 1;
+  vertical-align: middle;
+}
+
+#available-tests-container {
+  position: fixed;
+  justify-content: center;
+  left: 20px; /* Position à gauche */
+  top: 25%;
+  transform: translateY(-50%);
+  width: 350px;
+  z-index: 100;
+  background: var(--secondary-color);
+  border: 1px solid var(--accent-color);
+  border-radius: 1rem;
+  max-height: 400px; /* Hauteur maximale du conteneur */
+  overflow-y: auto;
+}
+
+#available-tests-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.add-available-test-btn {
+  background: var(--accent-color);
+  padding: 0.5rem;
+  border-radius: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+#test-name{
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: bold;
+  max-width: 700px;
+  overflow: hidden; /* Cache le contenu qui dépasse */
+  white-space: nowrap; /* Empêche les retours à la ligne */
+  text-overflow: ellipsis;
+}
+
+.add-available-test-btn i.fa-plus{
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: bold;
+}

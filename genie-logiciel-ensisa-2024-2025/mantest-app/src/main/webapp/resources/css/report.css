@@ -1,0 +1,415 @@
+/* Ajout du box-sizing global */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Conteneur principal */
+main {
+    background: var(--secondary-color);
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+    max-width: 700px;
+    width: 90%;
+    margin: 3rem auto;
+    margin-top: 0.7rem;
+    border: 1px solid var(--accent-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 600px; /* Taille fixe pour éviter l'extension de la page */
+    overflow: hidden;
+}
+
+/* Conteneur du rapport */
+.rapport {
+    width: 100%;
+    max-width: 650px;
+    padding-top: 0.5rem;
+    padding: 1.5rem;
+    flex-grow: 1; /* Fait en sorte que la liste remplisse le conteneur */
+    min-height: 0; /* Corrige le problème d'extension de la liste */
+    overflow-y: auto; /* Active le scroll vertical */
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) var(--secondary-color);
+}
+
+/* Rendre la scrollbar visible */
+.rapport::-webkit-scrollbar {
+    width: 8px; /* Augmenté pour plus de visibilité */
+}
+
+.rapport::-webkit-scrollbar-track {
+    background: var(--secondary-color); /* Conserve la couleur du fond */
+    border-radius: 4px;
+}
+
+.rapport::-webkit-scrollbar-thumb {
+    background: var(--accent-color); /* Accentue la visibilité */
+    border-radius: 4px;
+}
+
+.rapport::-webkit-scrollbar-thumb:hover {
+    background: var(--button-hover);
+}
+
+/* Élément test optimisé */
+.test-item {
+    width: 100%;
+    max-width: 650px; /* Assure que l'élément ne dépasse pas du conteneur */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 0.6rem;
+    gap: 0.5rem;
+    margin: 0.2rem 0;
+    background: var(--secondary-color);
+    box-sizing: border-box; /* Inclut le padding et la bordure dans la largeur */
+    overflow: hidden; /* Evite que le contenu dépasse */
+}
+
+/* Effet au survol */
+.test-item:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 0px 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Lien du test */
+.test-link {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out, transform 0.2s ease-out;
+}
+
+.test-link:hover {
+    color: var(--button-hover);
+    transform: scale(1.1);
+}
+
+/* Statut du test */
+.test-status {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+/* Description du test */
+.description {
+    font-size: 1.1rem; /* Augmentée pour plus de lisibilité */
+    color: var(--text-color);
+    text-align: left;
+    padding: 0.6rem 1rem; /* Plus d'espace autour de la description */
+    background: var(--secondary-color);
+    border-radius: 0.3rem;
+    border: 2px solid var(--accent-color);
+    border-left: 5px solid var(--accent-color);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-height: 80px; /* Augmentée pour voir plus de texte par défaut */
+    width: calc(100% - 2rem); /* Augmentée en longueur, ajustement pour la largeur */
+}
+
+/* Permet de forcer le retour à la ligne si besoin */
+.description:hover {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-y: auto;
+    max-height: 200px; /* Augmentation au survol */
+}
+
+/* Section erreur */
+.error {
+    width: 100%;
+    padding: 3rem 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.error h3 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.cta-btn {
+    background: var(--button-color);
+    color: var(--text-color);
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.cta-btn:hover {
+    background: var(--button-hover);
+}
+
+/* Style pour les liens d'exécution */
+.execution {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease-in-out;
+}
+
+.execution:hover {
+    color: var(--button-hover);
+}
+
+
+
+/* barre de recherche */
+
+
+.search-container {
+    width: 40vw;
+    position: relative;
+    max-width: 500px;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+}
+
+.modern-search {
+    width: 100%;
+    height: 45px;
+    padding: 0 2.8rem 0 1.2rem;
+    border: 2px solid var(--accent-color);
+    border-radius: 8px; /* Arrondi subtil (identique à l'image) */
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    margin: 0.5rem auto;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+    position: absolute;
+    right: 2rem; /* Position plus serrée */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: var(--accent-color);
+}
+
+.modern-search:focus {
+    outline: none;
+
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-color) 20%, transparent);
+}
+
+/* Supprime la croix de réinitialisation */
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* Pour Firefox */
+input[type="search"] {
+    -moz-appearance: textfield;
+}
+
+
+/* Barre de recherche */
+.modern-search {
+    transition: border-color 0.2s ease;
+}
+
+
+
+/* Animation icône */
+.search-icon {
+    transition: fill 0.2s ease;
+}
+
+/* Filtres */
+
+/* CSS */
+.filters-container {
+    position: fixed;
+    left: 20px; /* Position à gauche */
+    top: 50%;
+    transform: translateY(-50%);
+    width: 280px;
+    z-index: 100;
+}
+
+.filters-box {
+    background: var(--secondary-color);
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.filters-title {
+    color: var(--accent-color);
+    margin-bottom: 1.5rem;
+    font-size: 1.4rem;
+    text-align: center;
+}
+
+.filter-group {
+    margin-bottom: 1.2rem;
+}
+
+.filter-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.status-filter {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    background: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.filter-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+    background: var(--button-hover);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .filters-container {
+        position: static;
+        width: 100%;
+        margin-bottom: 2rem;
+        transform: none;
+    }
+}
+/* Styles supplémentaires */
+.date-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.date-pair {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.date-label {
+    color: var(--text-color);
+    min-width: 40px;
+    font-size: 0.9rem;
+}
+
+.date-filter {
+    flex-grow: 1;
+    padding: 0.6rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 6px;
+    background: var(--secondary-color);
+    color: var(--text-color);
+    font-family: inherit;
+}
+
+.date-filter::-webkit-calendar-picker-indicator {
+    filter: invert(0.8);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .date-pair {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .date-filter {
+        width: 100%;
+    }
+}
+
+.date-filter[type="datetime-local"] {
+    width: 100%;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+}
+
+/* Pour les navigateurs WebKit */
+.date-filter[type="datetime-local"]::-webkit-datetime-edit {
+    padding: 0.2rem;
+}
+.date-filter[type="datetime-local"]::-webkit-inner-spin-button {
+    margin-right: 4px;
+}
+
+#applyFilters {
+    transition: all 0.3s ease;
+}
+
+#applyFilters:active {
+    transform: scale(0.98);
+}
+
+#applyFilters.loading {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.highlight {
+    background-color: var(--highlight-search); /* Couleur de surlignage */
+    font-weight: bold; /* Texte en gras */
+    color: black; /* Couleur du texte */
+    border-radius: 3px; /* Coins arrondis */
+}
+
+/* animation pour les recherches/filtes */
+/* Animation de fade-in et fade-out */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-10px); }
+}
+
+.test-item {
+    animation: fadeIn 0.3s ease forwards; /* Animation d'apparition */
+}
+
+.test-item.hidden {
+    animation: fadeOut 0.3s ease forwards; /* Animation de disparition */
+    pointer-events: none; /* Désactive les interactions */
+}
+
+/* Groupe de boutons côte à côte */
+.filter-btn-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.filter-btn-group .filter-btn {
+    flex: 1;
+}

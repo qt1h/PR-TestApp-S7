@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title th:text="${title}"></title>
+  <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+  <link rel="stylesheet" th:href="@{/resources/css/error.css}" />
+  <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+</head>
+
+<body>
+  <header th:replace="../fragments/template :: header"></header>
+
+  <main class="error">
+    <h2 th:text="${error}"></h2>
+    <h3 th:text="${errorMessage}"></h3>
+    <p th:text="${errorSubMessage}"></p>
+    <p>Please try later or contact the system administrator if the problem persist.</p>
+    <a th:href="@{/}" class="cta-btn">Return to home page</a>
+  </main>
+
+  <footer th:replace="../fragments/template :: footer"></footer>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create a Test</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/testCreate.css}" />
+    <link rel="stylesheet" th:href="@{/libs/fontawesome/css/all.min.css}" />
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+  </head>
+  <body>
+    <div th:if="${!embedded}">
+      <header th:replace="../fragments/template :: header"></header>
+    </div>
+
+    <main>
+      <h2>Create a Test</h2>
+
+      <!-- handleSubmit(event) -->
+      <form
+        th:action="@{/testCreate}"
+        method="post"
+        onsubmit="handleSubmit(event)"
+        accept-charset="utf-8"
+      >
+        <input type="hidden" id="testStepsJson" name="testStepsJson" />
+
+        <!-- Test's name -->
+        <div class="form-group">
+          <label for="testName">Name :</label>
+          <input
+            type="text"
+            id="testName"
+            name="testName"
+            maxlength="128"
+            required
+            class="form-control"
+          />
+        </div>
+
+        <!-- Adding step's tests -->
+        <div class="form-group">
+          <label for="testSteps_input">Step :</label>
+          <div class="input-group">
+            <input
+              type="text"
+              maxlength="128"
+              id="testSteps_input"
+              class="form-control"
+            />
+            <button
+              id="addIt"
+              type="button"
+              class="cta-btn small"
+              onclick="addItem()"
+            >
+              <i class="fa-solid fa-plus"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic list of the steps -->
+        <ul id="dynamic-list">
+          <!-- Steps are added here -->
+        </ul>
+
+        <!-- Test's description -->
+        <div class="form-group">
+          <label for="description">Description :</label>
+          <textarea
+            id="description"
+            name="description"
+            maxlength="256"
+            rows="4"
+            class="form-control"
+          ></textarea>
+        </div>
+
+        <!-- Hidden field to know if the form is embedded -->
+        <input
+          type="hidden"
+          id="embedded"
+          name="embedded"
+          th:value="${embedded}"
+        />
+
+        <!-- Submitting the form -->
+        <div class="form-group">
+          <button id="create-btn" type="submit" class="cta-btn">Create</button>
+        </div>
+      </form>
+    </main>
+
+    <div th:if="${!embedded}">
+      <footer th:replace="../fragments/template :: footer"></footer>
+    </div>
+    <script type="text/javascript" th:src="@{/libs/sortable/Sortable.min.js}"></script>
+    <script type="text/javascript" th:src="@{/resources/js/create.js}"></script>
+  </body>
+</html>

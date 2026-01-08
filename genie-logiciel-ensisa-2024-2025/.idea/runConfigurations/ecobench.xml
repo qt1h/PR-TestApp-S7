@@ -1,0 +1,38 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ecobench" type="MavenRunConfiguration" factoryName="Maven">
+    <MavenSettings>
+      <option name="myGeneralSettings" />
+      <option name="myRunnerSettings" />
+      <option name="myRunnerParameters">
+        <MavenRunnerParameters>
+          <option name="cmdOptions" />
+          <option name="profiles">
+            <set />
+          </option>
+          <option name="goals">
+            <list>
+              <option value="test" />
+              <option value="-Dskip.tests=true" />
+              <option value="-Dskip.ecobench=false" />
+              <option value="--batch-mode" />
+              <option value="-s" />
+              <option value="../settings.xml" />
+              <option value="-Dmaven.repo.local=../libs" />
+            </list>
+          </option>
+          <option name="multimoduleDir" />
+          <option name="pomFileName" />
+          <option name="profilesMap">
+            <map />
+          </option>
+          <option name="projectsCmdOptionValues">
+            <list />
+          </option>
+          <option name="resolveToWorkspace" value="false" />
+          <option name="workingDirPath" value="$PROJECT_DIR$/mantest-app" />
+        </MavenRunnerParameters>
+      </option>
+    </MavenSettings>
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,0 +1,177 @@
+:root {
+    --background-color: #1a1a2e;
+    --accent-color: #e94560;
+    --text-color: #e0e0e0;
+    --secondary-color: #16213e;
+    --button-hover: #B3375A;
+    --hero-color: #e94560;
+    --button-color: #3EB100;
+    --button-color-hover : #41851D;
+    --highlight-search: #e1f05b;
+    line-height: 1.0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--background-color);
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: var(--secondary-color);
+    padding: 1rem 0;
+    text-align: center;
+    border-bottom: 0.2rem solid var(--accent-color);
+    flex-shrink: 0;
+}
+
+header h1 {
+    margin: 0;
+    color: var(--accent-color);
+    font-size: 2rem;
+    letter-spacing: 0.125rem;
+}
+
+header h1 a {
+    color: var(--accent-color);
+    text-decoration: none;
+}
+
+header h1 a:hover {
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+nav ul {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+nav ul li a:hover {
+    color: var(--accent-color);
+}
+
+.auth-section {
+    background: var(--secondary-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 1rem 0;
+    border-top: 0.2rem solid var(--accent-color);
+    text-align: center;
+    position: fixed;
+    bottom: 3rem;
+    width: 100%;
+}
+
+.auth-section h3 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+}
+
+.auth-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.auth-buttons .login-btn, .auth-buttons .signup-btn {
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.auth-buttons .login-btn {
+    background: var(--accent-color);
+    color: var(--text-color);
+}
+
+.auth-buttons .login-btn:hover {
+    background: var(--button-hover);
+}
+
+.auth-buttons .signup-btn {
+    background: var(--button-hover);
+    color: var(--text-color);
+}
+
+.auth-buttons .signup-btn:hover {
+    background: var(--accent-color);
+}
+
+footer {
+    background: var(--secondary-color);
+    color: var(--text-color);
+    text-align: center;
+    padding: 1rem 0;
+    border-top: 0.2rem solid var(--accent-color);
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+.sous-nav {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: -20px;
+    width: max-content;
+    padding-top: 1rem;
+    background: var(--secondary-color);
+    z-index: 10;
+}
+
+.sous-nav li {
+    padding: 0.5rem 1rem; /* Ajoute de l'espace intérieur */
+    margin-bottom: 0.5rem; /* Ajoute un espacement entre les éléments */
+}
+
+.deroulant{
+    position: relative;
+}
+
+.deroulant:hover .sous-nav {
+    display: block;
+}

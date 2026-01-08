@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Report</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/report.css}" />
+    <link rel="stylesheet" th:href="@{/libs/fontawesome/css/all.min.css}" />
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+</head>
+
+<body>
+<header th:replace="../fragments/template :: header"></header>
+
+<main>
+
+    <h2>Report</h2>
+
+
+    <!-- HTML -->
+    <div class="search-container">
+        <input
+                id="searchInput"
+                type="search"
+                class="modern-search"
+                placeholder="Search tests..."
+                aria-label="Search tests"
+        >
+        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    </div>
+    <div class="filters-container">
+        <div class="filters-box">
+            <h3 class="filters-title"> Filters</h3>
+
+            <!-- Modification des inputs pour la dernière modification -->
+            <div class="filter-group">
+                <label>Last modification :</label>
+                <div class="date-inputs">
+                    <div class="date-pair">
+                        <label for="modificationStartDate" class="date-label">From :</label>
+                        <input type="date" class="date-filter" id="modificationStartDate" step="1">
+                    </div>
+                    <div class="date-pair">
+                        <label for="modificationEndDate" class="date-label">To :</label>
+                        <input type="date" class="date-filter" id="modificationEndDate" step="1">
+                    </div>
+                </div>
+            </div>
+            <div class="filter-btn-group">
+                <button class="filter-btn" id="applyFilters">Apply</button>
+                <button class="filter-btn" id="resetFilters">Reset</button>
+            </div>
+
+        </div>
+    </div>
+    <div class="rapport" th:if="${errorMessage == null}">
+        <ul>
+            <li class="test-item"
+                th:each="test, iter: ${tests}"
+                th:id="${'test_' + test.id}"
+                data-creation-date="${test.creationDate ? #temporals.format(test.creationDate, 'yyyy-MM-dd') : ''}"
+                data-modification-date="${test.modificationDate ? #temporals.format(test.modificationDate, 'yyyy-MM-dd HH:mm') : ''}">
+                <p>Test:
+                    <a class="test-link" th:href="@{'/test?id=' + ${test.id}}">
+                        <span class="name">[[${test.name}]]</span>
+                    </a>
+                </p>
+
+                <p class="status-title">Status:
+                    <span class="test-status" th:text="${test.status}">[[${test.status}]]</span> <!-- Affichage du statut -->
+                </p>
+
+                <p th:if="${!test.description.isEmpty()}">Description:
+                    <span class="description">[[${test.description}]]</span>
+                </p>
+
+                <p>Latest Execution:
+                    <a class="execution"
+                       th:href="@{'/execution?id=' + ${latest_executions[iter.index].id}}"
+                       th:text="${latest_executions[iter.index].date != null ? #temporals.format(latest_executions[iter.index].date, 'yyyy-MM-dd HH:mm:ss') : 'N/A'}">
+                    </a>
+                </p>
+
+                <a class="report-link" th:href="@{'/testReport?id=' + ${test.id}}">
+                    <span class="name">Show More</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="error" th:if="${errorMessage != null}">
+        <h3 class="error-message" th:text="${errorMessage}"></h3>
+        <a class="back-link" th:href="@{/}">Return to home page</a>
+    </div>
+</main>
+
+<footer th:replace="../fragments/template :: footer"></footer>
+<script th:src="@{/resources/js/report.js}"></script>
+</body>
+</html>

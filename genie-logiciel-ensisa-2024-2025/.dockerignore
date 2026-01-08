@@ -1,0 +1,4 @@
+**/target/*
+**/src/test/*
+
+libs/fr/uha/ensisa/gl/testsquad/*

@@ -1,0 +1,433 @@
+main {
+  background: var(--secondary-color);
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 700px;
+  width: 90%;
+  margin: 3rem auto;
+  border: 1px solid var(--accent-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: auto;
+  overflow: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Centrage du contenu interne */
+.test-details {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Boutons Save et Delete côte à côte */
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.buttons-container .cta-btn,
+.buttons-container .btn-danger {
+  min-width: 100px;
+}
+
+
+/* Animation de l'icône dans le bouton roue */
+.wheel-button:hover i.fa-cog {
+  transform: rotate(90deg);
+  color: #007bff;
+}
+
+/* Titres et messages d'erreur */
+h2 {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+.error-message {
+  color: var(--text-color);
+  font-weight: bold;
+  text-align: center;
+}
+
+/* Formulaire et groupes de formulaire */
+.form-group {
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: var(--accent-color);
+  word-break: break-all;
+}
+
+.name-view,
+.description-view {
+  word-break: break-all;
+}
+
+.form-control {
+  padding: 0.8rem;
+  border: 0.075rem solid var(--text-color);
+  border-radius: 0.3rem;
+  background: var(--background-color);
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+#delete-test{
+  background: var(--accent-color);
+}
+
+input.form-control:hover,
+textarea.form-control:hover,
+select.form-control:hover {
+  border-color: var(--accent-color);
+}
+
+input.form-control:focus,
+textarea.form-control:focus,
+select.form-control:focus {
+  border-color: var(--accent-color);
+  outline: 0.075rem solid var(--accent-color);
+}
+
+/* Liste des étapes */
+#steps-title {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+#steps-list {
+  padding: 0;
+  margin: 0;
+}
+
+/* Vue d'édition d'un test */
+.step-info label {
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+.step-edit {
+  width: 33rem;
+}
+
+.step-view {
+  word-break: break-all;
+  color: var(--text-color);
+}
+
+.step-extra {
+  margin-left: 0.7rem;
+}
+
+.step-extra span {
+  display: inline-block;
+  min-width: 150px;
+}
+
+.step-extra label {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+/* Boutons d'action */
+.cta-btn,
+.btn-danger {
+  font-size: 1rem;
+  color: var(--text-color);
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  font-weight: bold;
+}
+
+.cta-btn {
+  background: var(--button-color);
+}
+
+.cta-btn:hover {
+  background: var(--button-color-hover);
+}
+
+.btn-danger {
+  background: var(--accent-color);
+}
+
+.btn-danger:hover {
+  background: var(--button-hover);
+}
+
+button {
+  margin: auto;
+}
+
+/* Formulaire de suppression */
+.form-delete {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Lien vers la page d'accueil */
+.back-link {
+  display: block;
+  text-align: center;
+  font-size: 1.2rem;
+  color: var(--accent-color);
+  margin-top: 2rem;
+}
+
+.back-link:hover {
+  color: var(--text-color);
+}
+
+.status-title {
+  font-weight: bold;
+  color: var(--accent-color);
+}
+
+/* Statuts */
+.select-status.undefined {
+  background-color: gray;
+  color: white;
+}
+
+.select-status.in-progress {
+  background-color: orange;
+  color: white;
+}
+
+.select-status.accepted {
+  background-color: limegreen;
+  color: white;
+}
+
+.select-status.refused {
+  background-color: red;
+  color: white;
+}
+
+option:hover {
+  background-color: grey;
+}
+
+.status-passed {
+  color: limegreen;
+}
+
+.status-failed {
+  color: red;
+}
+
+.status-in-progress {
+  color: orange;
+}
+
+.status-unverified {
+  color: grey;
+}
+
+.wheel-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+}
+
+.wheel-button i.fa-cog {
+  font-size: 24px;
+  color: #5e5d5d;
+  transition: transform 0.3s;
+}
+
+/* Détails de l'étape */
+.step-details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.3rem;
+}
+
+.section-header {
+  display: flex;
+  font-weight: bold;
+  color: var(--accent-color);
+  text-align: center;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 1.2rem;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 0.5rem;
+}
+
+.section-header button {
+  margin-right: 1rem;
+}
+
+section {
+  width: 100%;
+}
+
+.form-update {
+  width: 100%;
+}
+
+#descriptoion-group {
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: 1rem;
+}
+
+/* search bar */
+body,
+html {
+  text-align: center;
+}
+
+/* Conteneur principal de la barre de recherche */
+.search-container {
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centre horizontalement */
+  align-items: center;
+  margin-top: 30px; /* Espacement avec le menu */
+}
+
+.InputContainer {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 1rem auto;
+  display: flex;
+  align-items: center;
+}
+
+
+/* Champ de saisie */
+.input {
+  width: 100%;
+  padding: 0.8rem 2.5rem 0.8rem 1rem;
+  font-size: 1rem;
+  border: 2px solid var(--accent-color);
+  border-radius: 0.5rem;
+  background: var(--secondary-color);
+  color: var(--text-color);
+  outline: none;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.input:focus {
+  border-color: var(--button-hover);
+}
+
+/* Placeholder stylisé */
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Icône de recherche */
+.labelforsearch {
+  position: absolute;
+  right: 0.8rem;
+  cursor: pointer;
+}
+
+.searchIcon {
+  width: 16px;
+  height: 16px;
+  fill: var(--accent-color);
+  transition: transform 0.2s ease-in-out;
+}
+
+.InputContainer:focus-within .searchIcon {
+  transform: scale(1.1);
+}
+
+.search-results {
+  width: 100%;
+  text-align: center;
+  margin: 0.2rem 0;
+  padding: 0.3rem;
+  color: var(--text-color);
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  position: relative;
+  top: -5px; /* Alignement avec la barre de recherche */
+}
+
+.results-count {
+  background: var(--secondary-color);
+  padding: 0.4rem 0.8rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: inline-block;
+  font-size: 1.2rem; /* Augmentez la taille de la police ici */
+}
+
+/* Style pour "Aucun résultat" */
+.results-count.no-results {
+  color: #ff6b6b;
+  border-color: #ff6b6b;
+}
+
+/* Effet de surlignement pour les résultats de recherche */
+.highlight {
+  background-color: yellow; /* Couleur de fond pour le surlignement */
+  font-weight: bold; /* Optionnel, pour rendre le texte plus visible */
+  color: black !important;
+  display: inline-block;
+}
+
+.highlight.active {
+  background-color: #ffcc00; /* Un fond plus intense quand l'élément est actif */
+  color: black !important ; /* Change la couleur du texte pour plus de visibilité */
+}
+
+.drag-handle {
+  cursor: grab;
+  margin-right: 1rem;
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent-color);
+  display: none;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  outline: 0.125rem solid var(--accent-color);
+  border-radius: 0.625rem;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+.step-actions {
+  margin-left: auto;
+}
+
+.delete-step {
+  padding: 1rem 1rem;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.5rem;
+}

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Test Details</title>
+  <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+  <link rel="stylesheet" th:href="@{/resources/css/testDetails.css}" />
+  <link rel="stylesheet" th:href="@{/libs/fontawesome/css/all.min.css}">
+  <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+</head>
+
+<body>
+  <header th:replace="../fragments/template :: header"></header>
+
+  <main>
+    <section class="section-header">
+          <button type="button" id="edit-button" class="wheel-button">
+              <i class="fas fa-cog"></i>
+          </button>
+          <h2>Test Details</h2>
+    </section>
+
+    <section>
+      <!-- Error message if needed -->
+      <p th:if="${errorMessage != null}" class="error-message" th:text="${errorMessage}"></p>
+
+      <!-- Test's details -->
+      <div th:if="${errorMessage == null}" class="test-details">
+        <form th:action="@{/updateTest}" method="post" class="form-update" onsubmit="validateTestForm(event)" accept-charset="utf-8">
+          <input type="hidden" name="id" th:value="${test?.id}" />
+
+          <!-- Test's name -->
+          <p class="form-group">
+            <label for="name"><strong>Name:</strong></label>
+            <span class="name-view">[[${test?.name}]]</span>
+            <input type="text" maxlength="128" id="name" name="name" class="name-edit form-control" th:value="${test?.name}" required />
+          </p>
+
+          <!-- Test's description -->
+          <p class="form-group" id="description-group">
+            <label for="description"><strong>Description:</strong></label>
+            <span class="description-view">[[${test?.description}]]</span>
+            <textarea id="description" maxlength="256" name="description" class="description-edit form-control">[[${test?.description}]]</textarea>
+          </p>
+
+          <!-- search bar -->
+          <div class="InputContainer">
+            <input
+                    placeholder="Search"
+                    id="input"
+                    class="input"
+                    name="text"
+                    type="text"
+            />
+
+            <label class="labelforsearch" for="input">
+              <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+            </label>
+          </div>
+          <div class="search-results">
+            <span class="results-count" id="resultsCount"></span>
+          </div>
+
+          <!-- Test's steps -->
+          <ul id="steps-list" class="steps-list">
+            <li class="step-item" th:each="step, iterStat : ${steps}">
+              
+              
+              
+              <div class="step-details">
+                <div class="drag-handle">
+                  <i class="fa-solid fa-sort"></i>
+                </div>
+
+                <!-- Step's description -->
+                <div class="step-info">
+                  <label>Step:
+                    <span class="step-view" th:text="${step.description}"></span>
+                    <input type="text" maxlength="128" class="step-edit form-control" name="steps" th:value="${step.description}" required />
+                  </label>
+                </div>
+                <!-- Step's delete button (hidden by default) -->
+                <div class="step-actions">
+                    <button type="button" class="delete-step btn-danger small">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+
+
+          <!-- Action buttons -->
+          <div class="form-actions buttons-container">
+            <!-- Step's add button (hidden by default) -->
+            <button type="button" id="add-step" class="cta-btn small">
+              <i class="fa-solid fa-plus"></i>
+            </button>
+
+            <button type="submit" id="save-button" class="cta-btn small">
+              <i class="fa-solid fa-floppy-disk"></i>
+            </button>
+          </div>
+        </form>
+
+        <form th:action="@{/removeTest}" method="post" class="form-delete">
+            <input type="hidden" name="id" th:value="${test?.id}" />
+            <button type="submit" id="delete-test" class="cta-btn danger small" onclick="return confirm('Are you sure you want to delete this test?');">
+                <i class="fa-solid fa-trash"></i>
+            </button>
+        </form>
+
+          <a th:href="@{/testList}" class="back-link">Return to test list</a>
+      </div>
+    </section>
+  </main>
+
+  <footer th:replace="../fragments/template :: footer"></footer>
+  <script type="text/javascript" th:src="@{/libs/sortable/Sortable.min.js}"></script>
+  <script type="text/javascript" th:src="@{/resources/js/testDetails.js}"></script>
+</body>
+</html>

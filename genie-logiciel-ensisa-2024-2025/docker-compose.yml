@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+
+  tomcat:
+    image: mantest-app:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    environment:
+      ECOBENCH: $ECOBENCH
+    networks:
+      - frontend
+
+  proxy:
+    image: nginx:1.27.4-alpine # https://hub.docker.com/_/nginx
+    restart: on-failure
+    environment:
+      NGINX_PORT: $NGINX_PORT
+      NGINX_PUBLISHED_PORT: $NGINX_PUBLISHED_PORT
+      NGINX_PROXY_HOST: $NGINX_PROXY_HOST
+      NGINX_PROXY_PORT: $NGINX_PROXY_PORT
+    networks:
+      - frontend
+    volumes:
+      - "./docker/nginx.conf:/etc/nginx/nginx.conf:ro"
+      - "./docker/default.conf.template:/etc/nginx/templates/default.conf.template:ro"
+    ports:
+      - "$NGINX_PUBLISHED_PORT:$NGINX_PORT" # Must be NGINX_PUBLISHED_PORT:NGINX_PORT
+    healthcheck:
+      test: [ "CMD", "sh", "-c", "curl --fail http://localhost:$NGINX_PUBLISHED_PORT/ 2>/dev/null" ]
+      interval: 10s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      tomcat:
+        condition: service_healthy
+networks:
+  frontend:

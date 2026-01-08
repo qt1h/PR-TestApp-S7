@@ -1,0 +1,238 @@
+/* Conteneur principal */
+main {
+    background: var(--secondary-color);
+    padding: 1rem;
+    border-radius: 1rem;
+    max-width: 500px; /* Taille initiale */
+    width: 85%; /* Taille initiale */
+    margin: 1.2rem auto;
+    border: 1px solid var(--accent-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+}
+
+/* Titre principal */
+h2 {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0.4rem;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.2rem;
+}
+
+/* Formulaire */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    gap: 0.5rem; /* Espacement ajusté entre les éléments */
+    position: relative;
+    padding-bottom: 40px; /* Réduire l'espacement en bas */
+}
+
+/* Groupes de formulaire */
+.form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem; /* Espacement accru entre les labels et les champs */
+}
+
+/* Labels */
+.form-group label {
+    font-weight: bold;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+    align-self: flex-start;
+    margin-bottom: 0.3rem; /* Espacement entre le label et le champ */
+}
+
+/* Champs de saisie */
+.form-control {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid var(--text-color);
+    border-radius: 0.3rem;
+    background: var(--background-color);
+    color: var(--text-color);
+    font-size: 0.9rem;
+}
+
+/* Champ de description */
+textarea.form-control {
+    resize: none;
+    height: 80px; /* Réduire la hauteur du champ de description */
+    text-align: left; /* Alignement du texte à gauche pour les commentaires */
+}
+
+/* Bouton "Add" */
+.cta-btn.small {
+    padding: 0.2rem 0.5rem; /* Réduire le padding des boutons */
+    font-size: 0.75rem; /* Réduire la taille de la police */
+    min-width: 70px;
+    text-align: center;
+    background: var(--accent-color);
+    color: var(--text-color);
+    font-weight: bold;
+    border-radius: 0.3rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.cta-btn.small:hover {
+    background: var(--button-hover);
+}
+
+/* Liste des éléments dynamiques */
+#dynamic-list {
+    width: 100%;
+    padding: 0;
+    margin-top: 0.4rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--accent-color);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+#dynamic-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem;
+    border-bottom: 1px solid var(--text-color);
+    color: var(--text-color);
+}
+
+/* Groupe du bouton submit */
+.submit-group {
+    position: absolute;
+    bottom: 0.5rem; /* Ajuster la position */
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem; /* Espacement entre les boutons */
+}
+
+/* Bouton "Create" */
+#create-btn {
+    width: 40%; /* Réduire la largeur du bouton */
+    padding: 0.4rem 0.8rem; /* Réduire le padding */
+    background: var(--accent-color);
+    color: var(--text-color);
+    font-size: 0.85rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+#create-btn:hover {
+    background: var(--button-hover);
+}
+
+/* Lien "Back to Test List" */
+.back-link {
+    display: inline-block;
+    margin-top: 0.3rem;
+    padding: 0.4rem 0.8rem; /* Réduire le padding */
+    background: var(--secondary-color);
+    color: var(--accent-color);
+    font-size: 0.75rem; /* Réduire la taille de la police */
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 0.3rem;
+    border: 1px solid var(--accent-color);
+    text-align: center;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.back-link:hover {
+    background: var(--accent-color);
+    color: var(--text-color);
+}
+
+/* Positionnement et centrage des éléments */
+#save-button, .back-link {
+    margin-top: 0.3rem;
+    text-align: center;
+}
+
+#save-button {
+    width: auto;
+    min-width: 130px;
+    padding: 0.6rem 1.2rem;
+}
+
+/* Espacement et centrage des éléments de statut */
+.status-container, .step-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem; /* Réduire le padding */
+    gap: 0.5rem; /* Réduire l'espacement */
+}
+
+.status-item, .step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem; /* Réduire le padding */
+}
+
+/* Commentaires */
+.comment-section {
+    width: 100%;
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrer horizontalement */
+    gap: 0.6rem;
+    padding: 0.6rem 0;
+    text-align: left; /* Aligner le texte à gauche */
+    justify-content: center; /* Assurer un bon centrage */
+}
+
+/* Champ de commentaire */
+.comment-section textarea {
+    width: 100%; /* Utilisation de 100% pour s'assurer qu'il est bien centré */
+    margin-top: 0.5rem;
+    height: 80px; /* Réduire la hauteur du champ de commentaire */
+    text-align: left; /* Aligner le texte à gauche */
+    max-width: 90%; /* Limiter la largeur maximale pour éviter qu'il ne devienne trop large */
+    align-self: center; /* Centrer le champ dans son parent */
+}
+
+/* Bouton "Exécution Command" */
+#execution-command-btn {
+    width: 100%; /* Même largeur que le champ de commentaire */
+    max-width: 90%; /* Limiter la largeur pour correspondre à celle du champ de texte */
+    margin-top: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: var(--accent-color);
+    color: var(--text-color);
+    font-size: 1rem; /* Ajuster la taille du texte */
+    font-weight: bold;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s ease-in-out;
+    align-self: center; /* Centrer le bouton */
+}
+
+#execution-command-btn:hover {
+    background: var(--button-hover);
+}

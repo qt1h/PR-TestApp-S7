@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="contextPath"
+      th:content="${contextPath != null and contextPath != '' ? contextPath : '/'}"
+    />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create a Suite</title>
+    <link rel="stylesheet" th:href="@{/resources/css/template.css}" />
+    <link rel="stylesheet" th:href="@{/resources/css/suiteCreate.css}" />
+    <link rel="stylesheet" th:href="@{/libs/fontawesome/css/all.min.css}" />
+    <link rel="icon" type="image/png" th:href="@{/resources/icons/icon.png}" />
+  </head>
+  <body>
+    <header th:replace="../fragments/template :: header"></header>
+    <main>
+      <h2>Create a Suite</h2>
+      <form
+        th:action="@{/suiteCreate}"
+        method="post"
+        onsubmit="handleSuiteSubmit(event)"
+        accept-charset="utf-8"
+      >
+        <!-- Champ caché pour envoyer les IDs de tests sélectionnés dans l'ordre -->
+        <input type="hidden" id="suiteTestsJson" name="suiteTestsJson" />
+
+        <!-- Nom de la suite -->
+        <div class="form-group">
+          <label for="suiteName">Name :</label>
+          <input
+            type="text"
+            id="suiteName"
+            name="suiteName"
+            maxlength="128"
+            required
+            class="form-control"
+          />
+        </div>
+
+        <!-- Description de la suite -->
+        <div class="form-group">
+          <label for="description">Description :</label>
+          <textarea
+            id="description"
+            name="description"
+            maxlength="256"
+            rows="4"
+            class="form-control"
+          ></textarea>
+        </div>
+
+        <!-- Conteneur pour la liste des tests disponibles -->
+        <div class="form-group">
+          <label>Select tests to include in the suite:</label>
+          <div id="available-tests-container">
+            <div
+              th:replace="../fragments/suiteCreateAvailableTests :: availableTests"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Bouton pour ouvrir l'iframe de création d'un nouveau test -->
+        <div class="form-group">
+          <button
+            type="button"
+            class="create-test-btn"
+            onclick="openTestCreateModal()"
+          >
+            Create New Test
+          </button>
+        </div>
+
+        <!-- Bouton de soumission -->
+        <div class="form-group">
+          <button id="create-btn" type="submit" class="cta-btn">
+            Create Suite
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <!-- Modal pour créer un test via testCreate -->
+    <div id="testCreateModal">
+      <header>
+        <button type="button" onclick="closeTestCreateModal()">Close</button>
+      </header>
+      <iframe
+        id="testCreateIframe"
+        th:src="@{/testCreate(embedded=true)}"
+      ></iframe>
+    </div>
+
+    <footer th:replace="../fragments/template :: footer"></footer>
+    <script th:src="@{/resources/js/suiteCreate.js}"></script>
+  </body>
+</html>

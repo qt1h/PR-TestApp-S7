@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="head (title)">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:replace="${title}"></title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      media="all"
+      th:href="@{/resources/css/template.css}"
+    />
+    <!-- <link rel="stylesheet" type="text/css" media="all" th:href="${cssPath}" /> -->
+  </head>
+
+  <body>
+  <header th:fragment="header">
+    <h1><a th:href="@{/}">CentralFlow</a></h1>
+    <nav>
+      <ul>
+        <li><a th:href="@{/report}" id="report_link">Report</a></li>
+        <li class="deroulant" id="scroll_create">
+          <a href="#">Create &#9660;</a>
+          <ul class="sous-nav">
+            <li><a th:href="@{/testCreate}" id="create_link">Create Test&#10240;</a></li>
+            <li><a th:href="@{/suiteCreate}" id="create_suite_link">Create Suite</a></li>
+          </ul>
+        </li>
+        <li class="deroulant" id="scroll_list">
+          <a href="#">List &#9660;</a>
+          <ul class="sous-nav">
+            <li><a th:href="@{/testList}" id="list_link">Test List&#10240;</a></li>
+            <li><a th:href="@{/suiteList}" id="list_suite_link">Suite List</a></li>
+          </ul>
+        </li>
+
+
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+      <section class="auth-section" th:fragment="auth">
+        <h3>Join us!</h3>
+        <div class="auth-buttons">
+          <button class="login-btn">Login</button>
+          <button class="signup-btn">Sign up</button>
+        </div>
+      </section>
+    </main>
+
+    <footer th:fragment="footer">
+      <p>© 2025 CentralFlow. All rights reserved.</p>
+    </footer>
+  </body>
+</html>

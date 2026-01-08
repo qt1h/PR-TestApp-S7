@@ -1,0 +1,214 @@
+/* Conteneur principal */
+main {
+    background: var(--secondary-color);
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 700px;
+    width: 90%;
+    margin: 3rem auto;
+    border: 1px solid var(--accent-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 600px;
+    overflow: hidden;
+}
+
+/* Titre principal */
+h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0;
+    color: var(--text-color);
+    text-align: center;
+    width: 100%;
+}
+
+/* Liste des suites */
+.suites-list {
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* Élément suite */
+.suite-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 1.2rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 0.8rem;
+    background-color: var(--secondary-color);
+    margin-bottom: 1rem;
+    justify-content: flex-start;
+}
+
+/* Nom de la suite (bouton vert) */
+.suite-link {
+    background-color: var(--button-color);
+    color: var(--text-color);
+    padding: 0.6rem 1.2rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease-in-out;
+    min-width: 90px;
+    max-width: 150px;
+    text-align: center;
+    width: 9rem;
+}
+
+.suite-link:hover {
+    background-color: var(--button-color-hover);
+}
+
+/* Texte "Description:" */
+.suite-item span {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: 500;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+/* Description */
+.description {
+    background: var(--secondary-color);
+    border: 2px solid var(--accent-color);
+    border-left: 4px solid var(--accent-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 0.4rem;
+    max-width: 300px;
+    flex-grow: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.description:hover {
+    white-space: normal;
+    overflow-y: auto;
+    max-height: 120px;
+}
+
+/* Bouton modifier */
+.suite-item .cta-btn {
+    background-color: var(--button-color);
+    color: var(--text-color);
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease-in-out;
+}
+
+.suite-item .cta-btn:hover {
+    background-color: var(--button-color-hover);
+}
+
+.suite-item .cta-btn i {
+    font-size: 1rem;
+}
+
+/* Barre de recherche */
+.InputContainer {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 1rem auto;
+    display: flex;
+    align-items: center;
+}
+
+.input {
+    width: 100%;
+    padding: 0.8rem 2.5rem 0.8rem 1rem;
+    font-size: 1rem;
+    border: 2px solid var(--accent-color);
+    border-radius: 0.5rem;
+    background: var(--secondary-color);
+    color: var(--text-color);
+    outline: none;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.input:focus {
+    border-color: var(--button-hover);
+}
+
+.labelforsearch {
+    position: absolute;
+    right: 0.8rem;
+    cursor: pointer;
+}
+
+.searchIcon {
+    width: 1.2rem;
+    height: 1.2rem;
+    fill: var(--accent-color);
+    transition: fill 0.3s ease-in-out;
+}
+
+.labelforsearch:hover .searchIcon {
+    fill: var(--button-hover);
+}
+
+/* Résultats de recherche */
+.search-results {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: left;
+    color: var(--text-color);
+    font-size: 0.9rem;
+    padding-left: 0.5rem;
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+    color: black !important;
+    display: inline-block;
+}
+
+.highlight.active {
+    background-color: #ffcc00;
+    color: black !important;
+}
+
+/* Message d'erreur */
+.error {
+    width: 100%;
+    padding: 3rem 1.5rem;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.error h3 {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+/* Bouton générique */
+.cta-btn {
+    background: var(--button-color);
+    color: var(--text-color);
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+.cta-btn:hover {
+    background: var(--button-color-hover);
+}
